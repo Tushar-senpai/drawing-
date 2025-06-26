@@ -7,9 +7,16 @@ const sizeElement = document.getElementById("size");
 const colorElement = document.getElementById("color");
 const clearElement = document.getElementById("clear");
 const ctx = canvas.getContext("2d");
+const eraserButton = document.getElementById("eraser");
+
+
+let isEraser = false;
+
+
 
 let size = 10;
 let color = "black";
+let savedColor = color;
 let x;
 let y;
 let isPressed = false;
@@ -73,3 +80,23 @@ clearElement.addEventListener("click", () =>
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 );
 
+eraserButton.addEventListener("click", () => {
+  isEraser = !isEraser;
+  if (isEraser) {
+    savedColor = color; // save current color
+    color = "#ffffff"; // same as canvas background
+    eraserButton.innerText = "Pen";
+    eraserButton.style.backgroundColor = "#dc3545"; // red for eraser
+  } else {
+    color = savedColor;
+    eraserButton.innerText = "Eraser";
+    eraserButton.style.backgroundColor = "#007bff"; // default blue
+  }
+});
+
+colorElement.addEventListener("change", (e) => {
+  if (!isEraser) {
+    color = e.target.value;
+    savedColor = color;
+  }
+});
